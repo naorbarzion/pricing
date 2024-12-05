@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחירון Tracer 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .modern-gradient {
+            background: linear-gradient(135deg, #7dd3fc 0%, #0ea5e9 100%);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hover-scale {
+            transition: transform 0.2s;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+
+        .info-tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: 0.2s;
+            z-index: 10;
+        }
+
+        .tooltip-container:hover .info-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-sky-50 min-h-screen">
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <img src="https://tracer.co.il/wp-content/uploads/elementor/thumbs/Logo-H-p8d906f0bmrgobnn9uwquzibery89mtbvr1plpc910.png" 
+                 alt="Tracer Logo" 
+                 class="h-12 md:h-16 mx-auto mb-6">
+            <h1 class="text-2xl font-bold text-slate-800 mb-2">מחירון החלפות מכשירים</h1>
+        </div>
+
+        <!-- Main Controls -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-lg">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Device Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">בחירת מכשיר</label>
+                    <select id="deviceSelect" class="w-full p-3 rounded-xl border border-slate-200 bg-white shadow-sm focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
+                        <option value="">בחר מכשיר</option>
+                        <option value="go-plus">Tracer Go Plus</option>
+                        <option value="connect">Tracer Connect</option>
+                        <option value="go">Tracer Go</option>
+                        <option value="magnet">Tracer Magnet</option>
+                    </select>
+                </div>
+                <!-- Condition Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">מצב המכשיר</label>
+                    <select id="deviceCondition" class="w-full p-3 rounded-xl border border-slate-200 bg-white shadow-sm focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
+                        <option value="new">מכשיר חדש</option>
+                        <option value="refurbished">מכשיר מחודש</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Info Badges -->
+            <div class="flex flex-wrap gap-3 mt-4">
+                <div class="tooltip-container relative inline-block">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-sky-100 text-sky-700">
+                        <i class="fas fa-clock mr-1"></i>
+                        לקוח ותיק
+                    </span>
+                    <span class="info-tooltip">לקוח המנוי שנה ומעלה בשירות</span>
+                </div>
+                <div class="tooltip-container relative inline-block">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-700">
+                        <i class="fas fa-sync-alt mr-1"></i>
+                        מכשיר מחודש
+                    </span>
+                    <span class="info-tooltip">מכשיר שעבר חידוש מלא במעבדה</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Card -->
+        <div id="priceCard" class="opacity-0 transition-all duration-300">
+            <div class="glass-effect rounded-2xl overflow-hidden shadow-xl">
+                <!-- Header -->
+                <div class="modern-gradient p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 id="deviceTitle" class="text-2xl font-bold text-white flex items-center">
+                            <i class="fas fa-satellite-dish ml-2"></i>
+                            <span>בחר מכשיר</span>
+                        </h2>
+                        <!-- Status Badges -->
+                        <div class="flex gap-2">
+                            <span id="conditionBadge" class="hidden px-3 py-1 rounded-full text-sm font-medium bg-white/20 text-white">
+                                <i class="fas fa-sync-alt ml-1"></i>
+                                מכשיר מחודש
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing Grid -->
+                <div class="p-6">
+                    <div id="priceGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Generated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Warranty Terms -->
+                <div class="border-t border-slate-200">
+                    <details class="group">
+                        <summary class="flex items-center justify-between p-4 cursor-pointer bg-slate-50 hover:bg-slate-100">
+                            <span class="font-medium text-slate-700">
+                                <i class="fas fa-shield-alt ml-2 text-sky-500"></i>
+                                תנאי אחריות ושירות
+                            </span>
+                            <i class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="p-4 text-sm text-slate-600 space-y-3 bg-white">
+                            <p>5.1 החברה תספק ללקוח שירות תיקונים והחלפות באחריות של מכשירי האיכון. במסגרת האחריות, החברה תתקן או תחליף על חשבונה כל מכשיר איכון שנמצא בתקופת האחריות ובכפוף לתנאים הבאים.</p>
+                            <p>5.2 האחריות תינתן למכשירי האיכון למשך שנה מיום קבלתם אצל הלקוח או כל עוד אותו מכשיר איכון נמצא בחבילת מנוי מתמשך בתשלום חודשי קבוע אצל החברה ועד למקסימום 3 שנים מיום הרכישה.</p>
+                            <p>5.3 על הלקוח לשלוח את מכשיר האיכון לתחנת שירות של החברה בכתובת המצוינת באתר, על-חשבונו ועל אחריותו הבלעדית.</p>
+                            <p>5.4 האחריות לא מכסה נזק מכוון, שברים פיזיים, נזקי מים וקורוזיה, נזק בשל חיבור למקור חשמל לא מתאים.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const priceData = {
+            'go-plus': {
+                name: 'Tracer Go Plus',
+                prices: [
+                    { range: '3-5 מנויים', price: 349 },
+                    { range: '5-10 מנויים', price: 299 },
+                    { range: '10-40 מנויים', price: 249 },
+                    { range: '50 מנויים ומעלה', price: 199 }
+                ]
+            },
+            'connect': {
+                name: 'Tracer Connect',
+                prices: [
+                    { range: '3-5 מנויים', price: 299 },
+                    { range: '5-10 מנויים', price: 199 },
+                    { range: '10-40 מנויים', price: 149 },
+                    { range: '50 מנויים ומעלה', price: 99 }
+                ]
+            },
+            'go': {
+                name: 'Tracer Go',
+                prices: [
+                    { range: '3-5 מנויים', price: 249 },
+                    { range: '5-10 מנויים', price: 199 },
+                    { range: '10-40 מנויים', price: 99 },
+                    { range: '50 מנויים ומעלה', price: 49 }
+                ]
+            },
+            'magnet': {
+                name: 'Tracer Magnet',
+                prices: [
+                    { range: '3-5 מנויים', price: 499 },
+                    { range: '5-10 מנויים', price: 399 },
+                    { range: '10-40 מנויים', price: 299 },
+                    { range: '50 מנויים ומעלה', price: 299 }
+                ]
+            }
+        };
+
+        function updatePrices() {
+            const selectedDevice = deviceSelect.value;
+            const isRefurbished = deviceCondition.value === 'refurbished';
+            
+            if (!selectedDevice) {
+                priceCard.style.opacity = '0';
+                priceCard.style.transform = 'translateY(10px)';
+                return;
+            }
+
+            const device = priceData[selectedDevice];
+            deviceTitle.querySelector('span').textContent = device.name;
+            
+            // Update badges
+            conditionBadge.classList.toggle('hidden', !isRefurbished);
+            
+            // Calculate and display prices
+            priceGrid.innerHTML = device.prices.map(price => {
+                const basePrice = isRefurbished ? price.price - 50 : price.price;
+                const loyaltyPrice = basePrice - 50;
+                
+                return `
+                    <div class="hover-scale glass-effect rounded-xl p-4 transition-all duration-300">
+                        <div class="flex flex-col">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-medium text-slate-700">${price.range}</span>
+                                <span class="text-lg font-bold text-sky-600">${basePrice} ₪</span>
+                            </div>
+                            <div class="text-sm text-slate-500">
+                                <div class="flex items-center justify-between">
+                                    <span>מחיר ללקוח ותיק:</span>
+                                    <span class="font-medium text-emerald-600">${loyaltyPrice} ₪</span>
+                                </div>
+                                <div class="text-xs text-slate-400 text-left mt-1">*לא כולל מע"מ</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Show card with animation
+            priceCard.style.opacity = '1';
+            priceCard.style.transform = 'translateY(0)';
+        }
+
+        // Event Listeners
+        document.getElementById('deviceSelect').addEventListener('change', updatePrices);
+        document.getElementById('deviceCondition').addEventListener('change', updatePrices);
+    </script>
+</body>
+</html>
